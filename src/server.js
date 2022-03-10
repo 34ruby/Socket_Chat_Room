@@ -29,13 +29,33 @@ app.get("/", (_, res)=>{
 
 const server = http.createServer(app);
 
-const wss = WebSocket.Server({server});
+const wss = new WebSocket.Server({server});
 
 // app.listen(3000);
 
-server.listen(3000, ()=> console.log('Listening on localhost:3000'))
+// server.listen(3000, ()=> console.log('Listening on localhost:3000'))
+function handleListen() {
+    console.log('Listening on port 3000')
+}
+server.listen(3000, handleListen);
+
+// function handleConnection(socket) { 
+//     // console.log(socket);
+//     console.log("Connected to Browser")
+//     socket.send("hello!!")
+// }
+wss.on("connection", (socket)=>{
+    console.log("Connected to Browser")
+    socket.send("hello!!")
+    socket.on('close', () => {
+        console.log('Disconnected from the Browser')
+    })
+    socket.on("message", (msg)=>{
+        console.log(Buffer.from(msg,"base64").toString("utf-8"))
+    })
+});
 
 // 백단에서 실행되는건 server.js이고
 // 프런트 단에서 실행되는 건 public/js/app.js로 분리하였다. 
 
-// 부아아 
+// 부아아 나죽네 
