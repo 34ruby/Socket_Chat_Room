@@ -11,7 +11,10 @@ html(lang="en")
             h1 너무쉬워
         main
             ul 
-            form
+            form#nick 
+                input(type="text", placeholder="당신의 닉네임은?", required)
+                button Saved your Nickname
+            form#message
                 input(type="text", placeholder="메세지를 쓰세요", required)
                 button Send
     

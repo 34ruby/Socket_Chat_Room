@@ -1,6 +1,7 @@
 import http from "http";
 import WebSocket from "ws";
 import express from "express";
+import { SocketAddress } from "net";
 
 const app = express();
 
@@ -44,7 +45,9 @@ server.listen(3000, handleListen);
 //     console.log("Connected to Browser")
 //     socket.send("hello!!")
 // }
+const sockets = []; 
 wss.on("connection", (socket)=>{
+    sockets.push(socket)
     console.log("Connected to Browser")
     socket.send("hello!!")
     socket.on('close', () => {
@@ -52,6 +55,9 @@ wss.on("connection", (socket)=>{
     })
     socket.on("message", (msg)=>{
         console.log(Buffer.from(msg,"base64").toString("utf-8"))
+        // socket.send(Buffer.from(msg,"base64").toString("utf-8"))
+        // 연결된 모든 클라이언트에게 msg를 send한다...  
+        sockets.forEach((aSocket)=>{aSocket.send(Buffer.from(msg,"base64").toString("utf-8"))})
     })
 });
 
