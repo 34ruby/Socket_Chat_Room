@@ -1,0 +1,224 @@
+app.js
+
+// console.log('안뇽!!')
+
+// const socket = new WebSocket(`ws://${window.location.host}`)
+
+// socket.addEventListener('open', () => {
+//     console.log("Connected to Server!!")
+// })
+// const ul = document.querySelector('ul')
+
+// socket.addEventListener('message', (msg)=>{
+//     // console.log("just got this:", msg.data, "from the server")
+//     // 웹 페이지의 ul 태그를 찾고 
+//     // 동적으로 li 태그를 생성하고 
+//     // 그 li 태그의 내용으로 서버로부터 받은 메세지를 설정하고
+//     // 그 li를 그 ul태그의 자식으로 추가하는 것이다 !
+//     const li = document.createElement("li");
+//     li.innerText = msg.data; // <li>hello </li>
+//     ul.appendChild(li);
+
+// })
+
+// socket.addEventListener('close', ()=> {
+//     console.log("Disconnected from server")
+// })
+// // setTimeout(()=>{
+// //     socket.send("hello from the browser")
+// // }, 3000);
+
+// function makeMessage(type, payload) {
+//     const msg = {type, payload} // 'type':type, 'payload: payload'
+//     return JSON.stringify(msg);
+// }   
+
+// const messageForm = document.querySelector("#message")
+// messageForm.addEventListener('submit', (event)=>{
+//     event.preventDefault();
+//     const input = messageForm.querySelector('input')
+//     // form 태그 내의 input 태그에 입력된 값을 읽어온다.
+//     // 그 값을 socket을 통해 WebSocket Server로 전송
+//     console.log('submit event occurred', input.value)
+//     socket.send(makeMessage('new_message', input.value))
+
+
+//     const li = document.createElement("li")
+//     li.innerText = `You : ${input.value}`
+//     ul.appendChild(li)  
+
+//     input.value="";
+// })
+
+
+// // 아이디가 nick인 DOM 객체(Form)을 찾는다.
+// const nickForm = document.querySelector('#nick')
+
+// nickForm.addEventListener('submit', (event)=>{
+//     event.preventDefault();
+//     // form 태그 내의 input 태그에 입력된 값을 읽어온다.
+//     const input = document.querySelector('input')
+//     socket.send(makeMessage('nickname', input.value))
+// })
+
+
+server.js
+// import http from "http";
+// import WebSocket from "ws";
+// import express from "express";
+// import { SocketAddress } from "net";
+
+// const app = express();
+
+// console.log('안녕');
+
+// app.set("view engine", "pug")
+// app.set("views", __dirname + "/views") // static assets
+// // 퍼그가 처리할 파일은 여기 있ㄷ.
+// app.use("/public", express.static(__dirname+"/public"))
+// // 이 폴더 파일은 프런트 단으로 쓰겠다.
+
+
+// // function handleReq(_, res) {
+// //     res.render("home");
+// // }
+// // _ 값은 어느 값이나 상관없이 처리한다.
+// // 함수 정의
+// // app.get("/", handleReq)
+
+
+
+// app.get("/", (_, res)=>{
+//     res.render("home")
+// })
+// // 함수 레퍼런스를 가지고 함수를 실행한다 .
+
+// const server = http.createServer(app);
+
+// const wss = new WebSocket.Server({server});
+
+// // app.listen(3000);
+
+// // server.listen(3000, ()=> console.log('Listening on localhost:3000'))
+// function handleListen() {
+//     console.log('Listening on port 3000')
+// }
+// server.listen(3000, handleListen);
+
+// // function handleConnection(socket) { 
+// //     // console.log(socket);
+// //     console.log("Connected to Browser")
+// //     socket.send("hello!!")
+// // }
+// const sockets = []; 
+// wss.on("connection", (socket)=>{
+//     sockets.push(socket)
+//     console.log("Connected to Browser")
+//     socket.send("hello!!")
+//     socket.on('close', () => {
+//         console.log('Disconnected from the Browser')
+//     })  
+//     socket.on("message", (msg)=>{
+//         const parsedMsg = JSON.parse(msg)
+//         if (socket["nickname"] == undefined) {
+//             socket["nickname"] = "Guest"
+//         }
+
+//         switch(parsedMsg.type) {
+//             case "new_message" : 
+//             //연결된 모든 클라이언트에게 메세지를 브로드캐스팅
+//             // 이때, 이 메세지를 보낸 클라이언트의 nickname을 포함한다. 
+//                 sockets.forEach((aSocket)=> {
+//                     if (aSocket !== socket) {
+//                         aSocket.send(`${socket.nickname} : ${parsedMsg.payload}`)
+//                     }
+//                 });
+//                 break; 
+//             case "nickname" :
+//                 socket["nickname"] = parsedMsg.payload;
+//             // socket과 nickname을 연계시킨다. 
+//                 break;
+//         }
+//         // console.log(parseMsg, msg)
+//         // console.log(Buffer.from(msg,"base64").toString("utf-8"))
+//         // socket.send(Buffer.from(msg,"base64").toString("utf-8"))
+//         // 연결된 모든 클라이언트에게 msg를 send한다...  
+//         // sockets.forEach((aSocket)=>{aSocket.send(Buffer.from(msg,"base64").toString("utf-8"))})
+//     })
+// });
+
+// // 백단에서 실행되는건 server.js이고
+// // 프런트 단에서 실행되는 건 public/js/app.js로 분리하였다. 
+
+// // 부아아 나죽네 
+
+sioSocket.txt
+
+// import http from "http";
+// import socketio from "socket.io";
+// import express from "express";
+// import { SocketAddress } from "net";
+
+// const app = express();
+
+
+// app.set("view engine", "pug")
+// app.set("views", __dirname + "/views") // static assets
+// // 퍼그가 처리할 파일은 여기 있ㄷ.
+// app.use("/public", express.static(__dirname+"/public"))
+// // 이 폴더 파일은 프런트 단으로 쓰겠다.
+
+
+// // function handleReq(_, res) {
+// //     res.render("home");
+// // }
+// // _ 값은 어느 값이나 상관없이 처리한다.
+// // 함수 정의
+// // app.get("/", handleReq)
+
+
+
+// app.get("/", (_, res)=>{
+//     res.render("home")
+// })
+// // 함수 레퍼런스를 가지고 함수를 실행한다 .
+
+// const server = http.createServer(app);
+
+// // const wss = new WebSocket.Server({server});
+// const sioServer = socketio(server);
+
+// // app.listen(3000);
+
+// // server.listen(3000, ()=> console.log('Listening on localhost:3000'))
+// function handleListen() {
+//     console.log('Socket IO server is Listening on port 3000')
+// }
+// server.listen(3000, handleListen);
+
+// sioServer.on('connection', (socket)=>{
+//     console.log(socket);
+//     socket.onAny((event)=>{
+//         console.log(`socket Event: ${event}`);
+//     })
+//     socket.on("enter_room", (roomName, done)=>{
+//         console.log(socket.rooms);
+//         socket.join(roomName);
+//         // setTimeout(()=>{
+//         //     done();
+//         // }, 3000);
+//         done();
+//         socket.to(roomName).emit("welcome")
+//     })
+//     socket.on("disconneting", () => {
+//         socket.rooms.forEach(aRoom => {
+//             socket.to(aRoom).emit('bye')
+//         })
+//     })
+//     socket.on('new_message', (msg, room, done) => {
+//         socket.to(room).emit('new_message', msg)
+//         done()
+//     })
+// })
+
+
