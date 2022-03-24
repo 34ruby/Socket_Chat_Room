@@ -37,13 +37,12 @@ socket.on('welcome', () => {
     addMessage('Somebody joined!');
 });
 
-socket.on('bye', () => {
-    addMessage('Somebody left');
+socket.on('bye', (user) => {
+    addMessage(`Somebody left ${user}`);
 });
 
-const messageForm = room.querySelector('form');
-
-messageForm.addEventListener('submit', event => {
+const messageForm = room.querySelector('#message');
+messageForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const input = messageForm.querySelector('input');
     const message = input.value;
@@ -51,6 +50,16 @@ messageForm.addEventListener('submit', event => {
         addMessage(`You : ${message}`);
     });
     input.value = '';
+    console.log('버튼 이벤트 1')
 });
+
+const nickNameForm = document.querySelector("#nick")
+nickNameForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const nickInput = nickNameForm.querySelector("input")
+    const nickName = nickInput.value;
+    socket.emit("nickname", nickName)
+    console.log('버튼 이벤트 12')
+})
 
 socket.on('new_message', addMessage); // (msg) => {addMessage(msg);}
