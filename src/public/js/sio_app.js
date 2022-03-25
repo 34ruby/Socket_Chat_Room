@@ -26,40 +26,37 @@ function showRoom() {
 
 function addMessage(msg) {
     const ul = room.querySelector('ul');
-
     const li = document.createElement('li');
     li.innerText = msg;
-
     ul.appendChild(li);
 }
 
-socket.on('welcome', () => {
-    addMessage('Somebody joined!');
+socket.on('welcome', user => {
+    addMessage(`${user} joined the room!`);
 });
 
-socket.on('bye', (user) => {
-    addMessage(`Somebody left ${user}`);
+socket.on('bye', user => {
+    addMessage(`${user} left the room`);
 });
 
 const messageForm = room.querySelector('#message');
-messageForm.addEventListener('submit', (event) => {
+messageForm.addEventListener('submit', event => {
     event.preventDefault();
     const input = messageForm.querySelector('input');
     const message = input.value;
     socket.emit('new_message', message, roomName, () => {
-        addMessage(`You : ${message}`);
+        addMessage(`당신 : ${message}`);
     });
     input.value = '';
-    console.log('버튼 이벤트 1')
 });
 
-const nickNameForm = document.querySelector("#nick")
-nickNameForm.addEventListener('submit', (event) => {
+const nickNameForm = document.querySelector('#nick');
+nickNameForm.addEventListener('submit', event => {
     event.preventDefault();
-    const nickInput = nickNameForm.querySelector("input")
+    const nickInput = nickNameForm.querySelector('input');
     const nickName = nickInput.value;
-    socket.emit("nickname", nickName)
-    console.log('버튼 이벤트 12')
-})
+    socket.emit('nickname', nickName);
+   
+});
 
 socket.on('new_message', addMessage); // (msg) => {addMessage(msg);}
