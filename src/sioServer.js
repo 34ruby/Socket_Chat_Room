@@ -23,7 +23,7 @@ server.listen(3000, handleListen);
 
 function publicRooms() {
     const {
-        sockets:{adapter: {side, rooms}} 
+        sockets:{adapter: {sids, rooms}} 
     } = sioServer;
     const public_rooms = [];
     rooms.forEach((_, key) => { 
@@ -36,6 +36,10 @@ function publicRooms() {
         } 
     })
     return public_rooms
+}
+
+function countUser(roomName) {
+    return sioServer.sockets.adapter.rooms.get(roomName)?.size;
 }
 
 sioServer.on('connection', (socket) => {
@@ -53,14 +57,14 @@ sioServer.on('connection', (socket) => {
         //     done();
         // }, 3000);
         done();
-        socket.to(roomName).emit('welcome', socket.nickname);
-        // sioServer.socket.emit('room_change', publicRooms());
+        socket.to(roomName).emit('welcome', socket.nickname, countUser(roomName));
+       
 
         // 모든 public room에 room_change 이벤트를 전달하지 뭐야...
     });
     socket.on('disconnecting', () => {
         socket.rooms.forEach(aRoom => {
-            socket.to(aRoom).emit('bye ', socket.nickname);
+            socket.to(aRoom).emit('bye ', socket.nickname, countUser(aRoom)-1);
         });
     });
 
