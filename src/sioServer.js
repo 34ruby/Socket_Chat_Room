@@ -49,16 +49,17 @@ sioServer.on('connection', (socket) => {
         console.log(sioServer.sockets.adapter)
         console.log(`Socket Event: ${event}`);
     });
-    socket.on('enter_room', (roomName, done) => {
+    socket.on('enter_room', (roomName) => {
         // console.log(msg);
         // console.log(socket.rooms);
         socket.join(roomName);
         // setTimeout(() => {
         //     done();
         // }, 3000);
-        done();
+        // done();
         socket.to(roomName).emit('welcome', socket.nickname, countUser(roomName));
-       
+        // 다른 유저 외에도 자신에게도 welcome이벤트와 함께, 그 방에 있는 사용자 수를 전달 
+        socket.emit('welcome', socket.nickname, countUser(roomName))
         sioServer.sockets.emit('room_change', publicRooms());
         // 모든 public room에 room_change 이벤트를 전달하지 뭐야...
     });
@@ -77,7 +78,9 @@ sioServer.on('connection', (socket) => {
         done();
     });
 
-    socket.on('nickname', (nickName) => {
+    socket.on('nickname', (nickName, done) => {
         socket['nickname'] = nickName;
+        done();
+        socket.emit('room_change', publicRooms())
     })
 });

@@ -1,26 +1,27 @@
 const socket = io();
 const welcome = document.querySelector('#welcome');
-const roomForm = welcome.querySelector('form');
+const roomForm = welcome.querySelector('#room_form');
 let roomName = '';
 
-roomForm.addEventListener('submit', event => {
+roomForm.addEventListener('submit', (event) => {
     event.preventDefault();
     roomName = roomForm.querySelector('input').value;
 
-    socket.emit('enter_room', roomName, () => {
-        console.log('server in done');
-        showRoom();
-    });
+    socket.emit('enter_room', roomName)
 });
 
-const room = document.querySelector('#room');
+const room = document.querySelector('#room_div');
 room.hidden = true;
+roomForm.hidden = true;
 
 function showRoom() {
-    welcome.hidden = true;
+    // welcome.hidden = true;
+    nickNameForm.hidden = true;
+    roomForm.hidden = false;
     room.hidden = false;
     const h3 = room.querySelector('h3');
     h3.innerText = `Room : ${roomName}`;
+
 }
 
 function addMessage(msg) {
@@ -58,8 +59,7 @@ nickNameForm.addEventListener('submit', event => {
     event.preventDefault();
     const nickInput = nickNameForm.querySelector('input');
     const nickName = nickInput.value;
-    socket.emit('nickname', nickName);
-   
+    socket.emit('nickname', nickName, showRoom);
 });
 
 socket.on('room_change', (rooms)=> {

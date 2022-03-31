@@ -13,17 +13,19 @@ html(lang="en")
             h1 안녕!!
         main
             div#welcome 
-                form
+                form#nick
+                    input(placeholder="nickname", required, type="text")
+                    button Save
+                    
+                form#room_form
                     input(placeholder="room name", required, type="text")
                     button Enter Room
                     h4 Open Rooms : 
                     ul#open_rooms
-            div#room 
+                    
+            div#room_div
                 h3
                 ul
-                form#nick
-                    input(placeholder="nickname", required, type="text")
-                    button Save
                 form#message
                     input(placeholder="message", required, type="text")
                     button Send
