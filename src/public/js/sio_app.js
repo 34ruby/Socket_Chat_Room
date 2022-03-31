@@ -1,5 +1,4 @@
 const socket = io();
-
 const welcome = document.querySelector('#welcome');
 const roomForm = welcome.querySelector('form');
 let roomName = '';
@@ -38,6 +37,8 @@ socket.on('welcome', (user, newCount) => {
 });
 
 socket.on('bye', user => {
+    const h3 = room.querySelector('h3');
+    h3.innerText = `Room ${roomName} (${newCount})`;
     addMessage(`${user} left the room`);
 });
 

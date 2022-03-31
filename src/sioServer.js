@@ -15,7 +15,7 @@ app.get('/', (_, res) => res.render('home'));
 const server = http.createServer(app);
 
 const sioServer = socketio(server);
-function handleListen() {
+const handleListen =() =>  {
     console.log(`Socket IO Server is Listening on http://localhost:3000`);
 }
 
@@ -59,7 +59,7 @@ sioServer.on('connection', (socket) => {
         done();
         socket.to(roomName).emit('welcome', socket.nickname, countUser(roomName));
        
-
+        sioServer.sockets.emit('room_change', publicRooms());
         // 모든 public room에 room_change 이벤트를 전달하지 뭐야...
     });
     socket.on('disconnecting', () => {
