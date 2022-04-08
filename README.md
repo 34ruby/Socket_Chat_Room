@@ -1,7 +1,10 @@
-<h1>3WDJ 웹 프로그래밍</h1>
-
-<p>zoom 클론 코딩</p>
-<hr>
-<h3>구현 기능</h3>
-<p>유저 닉네임 설정</p>
-<p>룸 개설하여 룸 내의 유저끼리만 채팅 가능</p>
+<h1>Socket Chat Room</h1>
+<h3>実装している機能</h3>
+ユーザーのニックネーム設定<br>
+チャットルーム開設と同じルームの人同士出会い
+<h3>使用スキル</h3>
+Node.js (Express)<br>
+WebSocket (Socket.io)<br>
+Pug Template <br>
+<img width="80%" src="https://user-images.githubusercontent.com/76924629/162377637-842a6659-0e70-4bf4-b40f-3ea8d227fb81.JPG"> <br>
+<img width="80%" src="https://user-images.githubusercontent.com/76924629/162377642-0102a48f-7ef3-4f15-a468-757a59007693.JPG">
